@@ -319,7 +319,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 Para as comunidades:
 - 🌾 **Yield Hacker** - Maximizando yields em DeFi
 - 💰 **Renda Cripto** - Educação financeira crypto
-- 🏗️ **Cultura Builder** - Construindo o futuro Web3
+- 🏗️ **Cultura Builder** - Construindo o futuro com AI
 
 ## 🔗 Links Úteis
 
