@@ -1,233 +1,345 @@
-# MCP Server for DeBank API
+# DeBank MCP Server
 
-A Model Context Protocol (MCP) server that provides seamless integration with the [DeBank API](https://docs.cloud.debank.com/), enabling AI assistants to access DeFi portfolio data, token information, and blockchain analytics.
+> Servidor MCP (Model Context Protocol) para integração com a API do DeBank, permitindo consultar dados DeFi através de IA.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![FastMCP](https://img.shields.io/badge/FastMCP-Latest-green.svg)](https://github.com/jlowin/fastmcp)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-- **Portfolio Management**: Access user balances, token holdings, and NFT collections
-- **Token Information**: Query token prices, metadata, and market data
-- **Protocol Analytics**: Get DeFi protocol information and user positions
-- **Transaction History**: Retrieve and analyze transaction data
-- **Multi-Chain Support**: Works across 40+ blockchain networks
-- **Comprehensive Error Handling**: Robust error handling with user-friendly messages
-- **Rate Limiting**: Automatic rate limit handling and retry logic
+## 📋 Sobre
 
-## Installation
+O **DeBank MCP Server** é um servidor MCP que conecta a poderosa API do DeBank com assistentes de IA como o Claude Desktop. Com ele, você pode consultar dados DeFi de forma natural através de conversação, incluindo:
 
-### Using uvx (Recommended)
+- 💰 Saldos e portfolios de carteiras
+- 🪙 Informações de tokens e preços
+- 🎨 Coleções de NFTs
+- 🏦 Posições em protocolos DeFi
+- 📊 Histórico de transações
+- 🔒 Análise de segurança de approvals
+- ⛽ Preços de gas em tempo real
+- E muito mais!
+
+## ✨ Funcionalidades
+
+### Core Tools (4)
+- **Chains**: Lista todas as blockchains suportadas (93+ chains)
+- **Protocols**: Informações de protocolos DeFi com TVL
+- **Tokens**: Preços, metadados e holders de tokens
+- **Balance**: Saldo total de carteiras across chains
+
+### Portfolio Tools (5)
+- **User Tokens**: Holdings de tokens com paginação
+- **User NFTs**: Coleções de NFTs com metadados
+- **User Protocols**: Posições DeFi (simple/complex)
+- **User History**: Histórico de transações
+- **User Approvals**: Análise de segurança de approvals
+
+### Advanced Tools (6)
+- **Net Curve**: Tendências de valor em 24h
+- **Pool Info**: Analytics de liquidity pools
+- **Transaction Simulation**: Simula transações antes de enviar
+- **Gas Prices**: Preços de gas por tier
+- **Account Units**: Monitoramento de uso da API
+- **User Social**: Placeholder para futuro OAuth
+
+**Total**: 15 ferramentas totalmente funcionais!
+
+## 🚀 Instalação
+
+### Pré-requisitos
+
+- Python 3.10 ou superior
+- Conta no DeBank Cloud (para obter API key)
+- Claude Desktop (ou outro cliente MCP)
+
+### Passo 1: Obter API Key do DeBank
+
+1. Acesse [DeBank Cloud](https://cloud.debank.com/)
+2. Crie uma conta ou faça login
+3. Navegue até a seção de API
+4. Copie sua Access Key
+
+### Passo 2: Instalar o Servidor
 
 ```bash
-# Install and run directly
-uvx mcp-server-debank
+# Clone o repositório
+git clone https://github.com/caiovicentino/debank-mcp-server.git
+cd debank-mcp-server
 
-# Or install from source
-git clone <repository-url>
-cd mcp-server-debank
-uvx --from . mcp-server-debank
-```
-
-### Using pip
-
-```bash
-pip install mcp-server-debank
-
-# Or install from source
-git clone <repository-url>
-cd mcp-server-debank
+# Instale as dependências
 pip install -e .
 ```
 
-## Configuration
+### Passo 3: Configurar API Key
 
-### 1. Get DeBank API Access Key
+Crie um arquivo `.env` na raiz do projeto:
 
-1. Visit [DeBank Cloud](https://cloud.debank.com/)
-2. Sign up for an account
-3. Generate an API access key from your dashboard
-
-### 2. Set Environment Variable
-
-Create a `.env` file in your project directory:
-
-```bash
-DEBANK_ACCESS_KEY=your_access_key_here
+```env
+DEBANK_ACCESS_KEY=sua_api_key_aqui
 ```
 
-Or export it in your shell:
+**⚠️ IMPORTANTE**: Nunca compartilhe ou commit sua API key!
+
+### Passo 4: Testar o Servidor
 
 ```bash
-export DEBANK_ACCESS_KEY='your_access_key_here'
+# Teste se está funcionando
+python -c "from mcp_server_debank.server import mcp; print('✅ Servidor OK!')"
 ```
 
-### 3. Configure Claude Desktop
+## 🔧 Configuração no Claude Desktop
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+### macOS
 
+1. Edite o arquivo de configuração:
+```bash
+code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+
+2. Adicione o servidor DeBank:
 ```json
 {
   "mcpServers": {
     "debank": {
-      "command": "uvx",
-      "args": ["mcp-server-debank"],
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_debank.server"
+      ],
+      "cwd": "/caminho/para/debank-mcp-server",
       "env": {
-        "DEBANK_ACCESS_KEY": "your_access_key_here"
+        "DEBANK_ACCESS_KEY": "sua_api_key_aqui",
+        "PYTHONPATH": "/caminho/para/debank-mcp-server/src"
       }
     }
   }
 }
 ```
 
-## Usage
+3. Substitua `/caminho/para/debank-mcp-server` pelo caminho real
+4. Substitua `sua_api_key_aqui` pela sua API key do DeBank
+5. Reinicie o Claude Desktop
 
-Once configured, you can ask Claude to interact with DeBank data:
+### Windows
+
+1. Edite o arquivo de configuração:
+```powershell
+notepad %APPDATA%\Claude\claude_desktop_config.json
+```
+
+2. Use a mesma configuração acima, ajustando os caminhos para Windows:
+```json
+{
+  "mcpServers": {
+    "debank": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_debank.server"
+      ],
+      "cwd": "C:\\caminho\\para\\debank-mcp-server",
+      "env": {
+        "DEBANK_ACCESS_KEY": "sua_api_key_aqui",
+        "PYTHONPATH": "C:\\caminho\\para\\debank-mcp-server\\src"
+      }
+    }
+  }
+}
+```
+
+### Linux
+
+1. Edite o arquivo de configuração:
+```bash
+nano ~/.config/Claude/claude_desktop_config.json
+```
+
+2. Use a mesma configuração do macOS
+
+## 💡 Exemplos de Uso
+
+Após configurar, você pode fazer perguntas naturais no Claude:
+
+### Consultar Saldos
+```
+Qual é o saldo total da carteira vitalik.eth?
+```
+
+### Informações de Tokens
+```
+Me mostre informações sobre o token USDT na Ethereum
+```
+
+### Análise de Portfolio
+```
+Quais protocolos DeFi a carteira 0x... está usando?
+```
+
+### Segurança
+```
+Liste os approvals de token da carteira 0x... na Ethereum
+```
+
+### Gas Prices
+```
+Qual o preço do gas na Ethereum agora?
+```
+
+### NFTs
+```
+Quantos NFTs a carteira 0x... possui?
+```
+
+### Simulação de Transações
+```
+Simule esta transação antes de enviar: {dados da transação}
+```
+
+### Análise de Pools
+```
+Me dê informações sobre o pool 0x... na Ethereum
+```
+
+## 📊 Estrutura do Projeto
 
 ```
-"What's the total balance for address 0x1234...?"
-"Show me the token holdings for this wallet"
-"What DeFi protocols is this address using?"
-"Get the transaction history for the last 30 days"
-```
-
-## Available Tools
-
-### User & Portfolio
-- `get_user_balance` - Get total balance across all chains
-- `get_user_token_list` - Get list of tokens held by user
-- `get_user_nft_list` - Get NFT collection
-- `get_user_protocol_list` - Get DeFi protocol positions
-
-### Token Information
-- `get_token_info` - Get detailed token information
-- `get_token_price` - Get current token price
-- `search_tokens` - Search for tokens by name or symbol
-
-### Protocol & Chain
-- `get_supported_chains` - List all supported blockchains
-- `get_protocol_info` - Get protocol details
-- `get_gas_price` - Get current gas prices
-
-### Transactions
-- `get_user_transactions` - Get transaction history
-- `get_transaction_details` - Get detailed transaction information
-
-## Development
-
-### Project Structure
-
-```
-mcp-server-debank/
+debank-mcp-server/
 ├── src/
 │   └── mcp_server_debank/
-│       ├── __init__.py          # Package initialization
-│       ├── server.py            # FastMCP server and tool definitions
-│       ├── client.py            # DeBank API HTTP client
-│       ├── validators.py        # Input validation utilities
-│       └── models.py            # Pydantic models for responses
-├── tests/
-│   ├── test_client.py           # Client tests
-│   ├── test_tools.py            # Tool tests
-│   └── test_validators.py      # Validator tests
-├── examples/
-│   └── usage_examples.py        # Usage examples
-├── pyproject.toml               # Project metadata and dependencies
-└── README.md                    # This file
+│       ├── __init__.py
+│       ├── server.py              # Servidor MCP principal
+│       ├── client.py              # Cliente HTTP DeBank
+│       ├── validators.py          # Validação de inputs
+│       ├── models.py              # Modelos Pydantic
+│       ├── portfolio_tools.py     # Tools de portfolio
+│       └── advanced_tools.py      # Tools avançados
+├── tests/                         # Testes (opcional)
+├── pyproject.toml                 # Configuração do projeto
+├── .env.example                   # Template de configuração
+├── .gitignore                     # Arquivos ignorados
+└── README.md                      # Esta documentação
 ```
 
-### Running Tests
+## 🔐 Segurança
 
-```bash
-# Install dev dependencies
-pip install -e ".[dev]"
+- ✅ **Nunca** compartilhe sua API key do DeBank
+- ✅ Use arquivo `.env` para armazenar credenciais
+- ✅ Adicione `.env` ao `.gitignore`
+- ✅ Revogue keys comprometidas imediatamente no [DeBank Cloud](https://cloud.debank.com/)
+- ✅ Monitore o uso da API regularmente usando a tool `debank_get_account_units`
+- ⚠️ Não exponha sua API key em commits, logs ou screenshots
+- ⚠️ Use a tool de simulação de transações antes de enviar transações reais
 
-# Run all tests
-pytest
+## 🐛 Troubleshooting
 
-# Run with coverage
-pytest --cov=mcp_server_debank
+### Erro: "DEBANK_ACCESS_KEY not found"
+**Solução**: Certifique-se de que o arquivo `.env` existe e contém sua API key, ou que a variável de ambiente está configurada corretamente no `claude_desktop_config.json`.
 
-# Run specific test file
-pytest tests/test_client.py
+### Erro: "MCP tool not found"
+**Solução**:
+1. Reinicie o Claude Desktop completamente (Cmd+Q no macOS e reabra)
+2. Verifique se o caminho `cwd` no config está correto
+3. Verifique se o `PYTHONPATH` está apontando para o diretório `src`
 
-# Run specific test
-pytest tests/test_client.py::test_validate_address
-```
+### Response muito grande
+**Solução**: Use os parâmetros de paginação nas ferramentas de portfolio:
+- `limit`: Reduzir quantidade de resultados (padrão: 20, máximo: 500)
+- `offset`: Paginar através dos resultados
 
-### Local Development
+### Erro 401: Unauthorized
+**Solução**:
+1. Verifique se sua API key está correta
+2. Confirme que a key está ativa no [DeBank Cloud](https://cloud.debank.com/)
+3. Tente gerar uma nova API key
 
-```bash
-# Clone repository
-git clone <repository-url>
-cd mcp-server-debank
+### Erro 429: Rate Limit
+**Solução**:
+- O servidor implementa retry automático com backoff exponencial
+- Aguarde alguns segundos entre requisições
+- Considere fazer upgrade do plano no DeBank Cloud para limites maiores
 
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
+### Erro: "ModuleNotFoundError: No module named 'mcp_server_debank'"
+**Solução**:
+1. Certifique-se de ter executado `pip install -e .` no diretório raiz
+2. Verifique se o `PYTHONPATH` no config aponta para o diretório `src`
+3. Tente reinstalar: `pip uninstall mcp-server-debank && pip install -e .`
 
-# Install in development mode
-pip install -e ".[dev]"
+### Claude Desktop não está carregando o servidor
+**Solução**:
+1. Abra o menu Developer no Claude Desktop (View > Developer)
+2. Verifique os logs do servidor na aba MCP
+3. Confirme que o arquivo de configuração JSON está válido (use um validador JSON)
+4. Teste o servidor manualmente: `python -m mcp_server_debank.server`
 
-# Run tests
-pytest
+## 📈 Limites da API
 
-# Test the server with MCP inspector
-mcp dev src/mcp_server_debank/server.py
-```
+- **Rate Limit**: Varia por plano (até 100 req/s no plano Pro)
+- **Paginação**: Máximo 500 items por página (configurável)
+- **Chains**: 93+ blockchains suportadas
+- **Units**: Cada chamada consome units da sua cota (monitore com `debank_get_account_units`)
 
-## API Coverage
+## 🤝 Contribuindo
 
-This server implements the following DeBank API endpoints:
+Contribuições são bem-vindas! Sinta-se à vontade para:
 
-- ✅ User information and balances
-- ✅ Token information and prices
-- ✅ Protocol and chain data
-- ✅ Transaction history
-- ✅ NFT collections
-- ✅ Gas prices
-- 🚧 Advanced analytics (coming soon)
-- 🚧 Historical data (coming soon)
+1. Fazer fork do projeto
+2. Criar uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'Add: MinhaFeature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
+5. Abrir um Pull Request
 
-## Error Handling
+### Ideias para Contribuições
 
-The server provides comprehensive error handling:
+- 🧪 Adicionar testes unitários e de integração
+- 📚 Melhorar documentação e exemplos
+- 🐛 Reportar e corrigir bugs
+- ✨ Implementar novas ferramentas baseadas em endpoints do DeBank
+- 🌐 Adicionar suporte para outros idiomas
+- 🔧 Melhorar error handling e validações
 
-- **Authentication Errors (401)**: Invalid access key
-- **Authorization Errors (403)**: Capacity limits or insufficient permissions
-- **Validation Errors (400)**: Invalid input parameters
-- **Rate Limiting (429)**: Automatic retry with backoff
-- **Server Errors (500)**: Graceful error messages
-- **Network Errors**: Automatic retry with exponential backoff
+## 📝 Changelog
 
-## Rate Limits
+### v1.0.0 (2025-01-11)
+- ✅ 15 ferramentas MCP totalmente funcionais
+- ✅ Suporte a 93+ blockchains
+- ✅ Paginação implementada em todas as tools relevantes
+- ✅ Type safety e validação robusta com Pydantic
+- ✅ Error handling completo com retry automático
+- ✅ Production-ready com logging estruturado
+- ✅ Documentação completa em português
 
-DeBank API has rate limits based on your subscription tier. This server:
-- Automatically detects rate limit responses
-- Waits for the specified retry-after period
-- Provides clear error messages when limits are exceeded
+## 📄 Licença
 
-## Contributing
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-Contributions are welcome! Please:
+## 👨‍💻 Autor
 
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
+**Desenvolvido por Caio Vicentino**
 
-## License
+Para as comunidades:
+- 🌾 **Yield Hacker** - Maximizando yields em DeFi
+- 💰 **Renda Cripto** - Educação financeira crypto
+- 🏗️ **Cultura Builder** - Construindo o futuro Web3
 
-MIT License - see LICENSE file for details
+## 🔗 Links Úteis
 
-## Support
+- [DeBank Cloud](https://cloud.debank.com/) - Obtenha sua API key
+- [DeBank API Docs](https://docs.cloud.debank.com/) - Documentação oficial da API
+- [FastMCP](https://github.com/jlowin/fastmcp) - Framework MCP usado neste projeto
+- [Claude Desktop](https://claude.ai/download) - Cliente MCP oficial da Anthropic
+- [MCP Protocol](https://modelcontextprotocol.io/) - Especificação do protocolo MCP
+- [DeBank Platform](https://debank.com/) - Explore portfolios DeFi
 
-- **DeBank API Documentation**: https://docs.cloud.debank.com/
-- **MCP Documentation**: https://modelcontextprotocol.io/
-- **Issues**: Please report bugs via GitHub Issues
+## ⭐ Apoie o Projeto
 
-## Acknowledgments
+Se este projeto foi útil para você, considere:
+- ⭐ Dar uma estrela no GitHub
+- 🐛 Reportar bugs e sugerir melhorias
+- 🤝 Contribuir com código
+- 📢 Compartilhar com a comunidade
+- 💬 Dar feedback sobre sua experiência
+- 🎓 Criar tutoriais e conteúdo educativo
 
-Built with:
-- [FastMCP](https://github.com/jlowin/fastmcp) - MCP server framework
-- [httpx](https://www.python-httpx.org/) - HTTP client
-- [Pydantic](https://pydantic-docs.helpmanual.io/) - Data validation
-- [DeBank API](https://docs.cloud.debank.com/) - DeFi data provider
+---
+
+**Feito com ❤️ para a comunidade Web3 brasileira**
