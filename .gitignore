@@ -1,0 +1,118 @@
+# API Keys and Secrets - CRITICAL: Never commit these!
+.env
+.env.local
+.env.*.local
+*.key
+*_key.txt
+api_key.txt
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+env.bak/
+venv.bak/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+
+# Documentation (test/debug files only - keep main docs)
+*TEST*.md
+*test*.md
+*AGENT*.md
+*SUMMARY*.md
+*REPORT*.md
+*VERIFICATION*.md
+*IMPLEMENTATION*.md
+*GUIDE*.md
+PAGINATION*.md
+ADVANCED_TOOLS*.md
+GAS_PRICES*.md
+INSTALLATION*.md
+QUALITY*.md
+FIX*.md
+SETUP*.md
+CLAUDE_DESKTOP_SETUP.md
+INTEGRATION_GUIDE.md
+PORTFOLIO_TOOLS_DOCUMENTATION.md
+PORTFOLIO_TOOLS_QUICK_REFERENCE.md
+TOOL_EXAMPLES.md
+TESTING.md
+QUICK_START.md
+
+# Test scripts (root level test files - keep tests/ directory)
+/test_*.py
+/*_test.py
+test_connection.sh
+
+# Claude Desktop config (keep as example only)
+claude_desktop_config.json
