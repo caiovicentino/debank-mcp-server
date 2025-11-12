@@ -6,6 +6,10 @@
 [![FastMCP](https://img.shields.io/badge/FastMCP-Latest-green.svg)](https://github.com/jlowin/fastmcp)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<a href="https://glama.ai/mcp/servers/@caiovicentino/debank-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@caiovicentino/debank-mcp-server/badge" alt="DeBank Server MCP server" />
+</a>
+
 ## 📋 Sobre
 
 O **DeBank MCP Server** é um servidor MCP que conecta a poderosa API do DeBank com assistentes de IA como o Claude Desktop. Com ele, você pode consultar dados DeFi de forma natural através de conversação, incluindo:
